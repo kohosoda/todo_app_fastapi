@@ -7,7 +7,17 @@ class TaskBase(BaseModel):
 class TaskCreate(TaskBase):
     pass
 
+class TaskUpdate(TaskBase):
+    is_done: bool = Field(False, desciption="完了フラグ")
+
+
 class TaskCreateResponse(TaskCreate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class TaskUpdateResponse(TaskUpdate):
     id: int
 
     class Config:
@@ -15,7 +25,7 @@ class TaskCreateResponse(TaskCreate):
 
 class Task(TaskBase):
     id: int
-    done: bool = Field(False, description="完了フラグ")
+    is_done: bool = Field(False, description="完了フラグ")
 
     class Config:
         orm_mode = True

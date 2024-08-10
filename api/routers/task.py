@@ -36,20 +36,20 @@ async def create_task(task_body: task_schema.TaskCreate, db: AsyncSession = Depe
     """
     return await task_crud.create_task(db=db, task_create=task_body)
 
-@router.put("/tasks/{task_id}", response_model=task_schema.TaskCreateResponse)
+@router.put("/tasks/{task_id}", response_model=task_schema.TaskUpdateResponse)
 async def update_task(
-    task_id: int, task_body: task_schema.TaskCreate, db: AsyncSession = Depends(get_db)
+    task_id: int, task_body: task_schema.TaskUpdate, db: AsyncSession = Depends(get_db)
 ):
     """
     既存のタスクを更新します。
 
     Args:
         task_id (int): 更新するタスクのID。
-        task_body (task_schema.TaskCreate): 更新するタスクのデータ。
+        task_body (task_schema.TaskUpdate): 更新するタスクのデータ。
         db (AsyncSession): データベースセッション。
 
     Returns:
-        task_schema.TaskCreateResponse: 更新されたタスクのレスポンス。
+        task_schema.TaskUpdateResponse: 更新されたタスクのレスポンス。
 
     Raises:
         HTTPException: タスクが存在しない場合は404エラーを返します。
@@ -57,7 +57,7 @@ async def update_task(
     task = await task_crud.get_task(db=db, task_id=task_id)
     if task is None:
         raise HTTPException(status_code=404, detail="Task not exist")
-    return await task_crud.update_task(db=db, task_create=task_body, original=task)
+    return await task_crud.update_task(db=db, task_update=task_body, original=task)
 
 @router.delete("/tasks/{task_id}", response_model=None)
 async def delete_task(task_id: int, db: AsyncSession = Depends(get_db)):

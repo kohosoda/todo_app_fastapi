@@ -37,9 +37,10 @@ async def get_task(db: AsyncSession, task_id: int) -> Optional[task_model.Task]:
     return task[0] if task is not None else None
 
 async def update_task(
-    db: AsyncSession, task_create: task_scheme.TaskCreate, original: task_model.Task
+    db: AsyncSession, task_update: task_scheme.TaskUpdate, original: task_model.Task
 ) -> task_model.Task:
-    original.title = task_create.title
+    original.title = task_update.title
+    original.is_done = task_update.is_done
     db.add(original)
     await db.commit()
     await db.refresh(original)
