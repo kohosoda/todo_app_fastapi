@@ -75,4 +75,4 @@ async def delete_task(task_id: int, db: AsyncSession = Depends(get_db)):
     if task is None:
         raise HTTPException(status_code=404, detail="Task not exist")
     await task_crud.delete_task(db=db, original=task)
-    return
+    return Response(status_code=204)  # 204 No Contentを返す
